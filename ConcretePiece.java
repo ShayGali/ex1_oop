@@ -37,6 +37,11 @@ public abstract class ConcretePiece implements Piece {
         this.moves.add(position);
     }
 
+    public void removeMove(Position position) {
+        this.distance -= moves.get(moves.size() - 1).distance(position); // Updating the distance by removing last place in 'moves'  and using distance method
+        this.moves.remove(position);
+    }
+
     /**
      * @return the distance that the piece has moved.
      */

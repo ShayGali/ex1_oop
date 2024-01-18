@@ -675,7 +675,10 @@ public class GameLogic implements PlayableLogic {
         board[lastTurn.getTo().row()][lastTurn.getTo().col()] = null;
 
         // update the piece moves list
-        piece.getMoves().remove(piece.getMoves().size() - 1);
+//        piece.getMoves().remove(piece.getMoves().size() - 1);
+
+        // update the distance of the piece, decreasing it
+        piece.removeMove(piece.getMoves().get(piece.getMoves().size() - 1));
 
         //update the piece number of eats
         piece.setNumberOfEats(piece.getNumberOfEats() - lastTurn.getEatenPawn().size());
