@@ -753,7 +753,7 @@ public class GameLogic implements PlayableLogic {
         ConcretePiece[] playerTwoPieces = Arrays.copyOfRange(gamePieces, 13, 37);
 
         // sort the pieces according to the assignment instructions
-        Comparator<ConcretePiece> comp1 = (piece1, piece2) -> {
+        Comparator<ConcretePiece> comp = (piece1, piece2) -> {
             // sort by the number of moves
             if (piece1.getMoves().size() != piece2.getMoves().size())
                 return piece1.getMoves().size() - piece2.getMoves().size();
@@ -761,10 +761,9 @@ public class GameLogic implements PlayableLogic {
             // the number of moves is the same, so sort by the number of the pieces
             return piece1.getPieceNum() - piece2.getPieceNum();
         };
-
         // sort the pieces of each player separately
-        Arrays.sort(playerOnePieces, comp1);
-        Arrays.sort(playerTwoPieces, comp1);
+        Arrays.sort(playerOnePieces, comp);
+        Arrays.sort(playerTwoPieces, comp);
 
         // print the sorted pieces
         // first the pieces of the winner, then the pieces of the loser
