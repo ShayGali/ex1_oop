@@ -201,6 +201,10 @@ public class GameLogic implements PlayableLogic {
      */
     @Override
     public boolean move(Position a, Position b) {
+        // check if a and b are in the board
+        checkIfPositionIsInBoard(a);
+        checkIfPositionIsInBoard(b);
+
         ConcretePiece piece = board[a.row()][a.col()];
         Player currentPlayer = isSecondPlayerTurn() ? secondPlayer : firstPlayer;
         // check if there is a piece at position a
@@ -446,72 +450,6 @@ public class GameLogic implements PlayableLogic {
     }
 
 
-//    private void checkEat(Position position) {
-//        // only pawns can eat, so if the piece at the given position is not a pawn, return
-//        if (!(board[position.getRow()][position.getCol()] instanceof Pawn currPawn))
-//            return;
-//
-//        /*
-//        we add a pawn from the same player to the board corners, it's help us to don't have to handle the edge cases
-//        that the corner acts as the second captured pawn
-//         */
-//        //add a pawn from the same player to the board corners (the index is 0 because we don't care about the index)
-//        board[0][0] = new Pawn(currPawn.getOwner(), 0, null);
-//        board[0][10] = new Pawn(currPawn.getOwner(), 0, null);
-//        board[10][0] = new Pawn(currPawn.getOwner(), 0, null);
-//        board[10][10] = new Pawn(currPawn.getOwner(), 0, null);
-//
-//        // Check all four directions
-//        checkEatInDirection(position, 0, -1); // Up
-//        checkEatInDirection(position, 0, 1); // Down
-//        checkEatInDirection(position, -1, 0); // Left
-//        checkEatInDirection(position, 1, 0); // Right
-//
-//        // remove the added pawn from the board corners
-//        board[0][0] = null;
-//        board[0][10] = null;
-//        board[10][0] = null;
-//        board[10][10] = null;
-//    }
-//
-//    /**
-//     * helper method to {@link #checkEat(Position)} function. <br>
-//     * check if the piece at the given position can eat in the given direction. <br>
-//     *
-//     * @param position the position of the piece that we want to check if it can eat in the given direction
-//     * @param dx       the x direction. 1 for right, -1 for left, 0 for same column
-//     * @param dy       the y direction. 1 for down, -1 for up, 0 for same row
-//     */
-//    private void checkEatInDirection(Position position, int dx, int dy) {
-//        Pawn currPawn = (Pawn) board[position.getRow()][position.getCol()];
-//        int row = position.getRow();
-//        int col = position.getCol();
-//        // check if there is an enemy pawn in the given direction, and if it's not the king (the king can't be eaten)
-//        if (isThereEnemyPawnDir(position, dx, dy) && !kingPosition.equals(new Position(row + dy, col + dx))) {
-//            // check if the enemy pawn is between one of the board edges or a pawn from the same player
-//            if (row + dy == 0 || // if the enemy pawn is in the first row
-//                    row + dy == 10 || // if the enemy pawn is in the last row
-//                    col + dx == 0 || // if the enemy pawn is in the first column
-//                    col + dx == 10 || // if the enemy pawn is in the last column
-//                    // if there is a pawn from the same player in the same direction
-//                    (board[row + 2 * dy][col + 2 * dx] instanceof Pawn && board[row + 2 * dy][col + 2 * dx].getOwner() == currPawn.getOwner())
-//            ) {
-//                // check if the enemy pawn is the second captured pawn
-//                if (board[row + dy][col + dx].getOwner() == secondPlayer) {
-//                    // the second player lost a pawn
-//                    playerTwoRemainingPawns--;
-//                }
-//                // eat the enemy pawn
-//                currPawn.eat();
-//                // update the turn history
-//                turnsHistory.peek().addEatenPawn((Pawn) board[row + dy][col + dx]);
-//                // remove the enemy pawn from the board
-//                board[row + dy][col + dx] = null;
-//            }
-//        }
-//    }
-
-
     /**
      * Get the piece at a given position.
      *
@@ -520,6 +458,7 @@ public class GameLogic implements PlayableLogic {
      */
     @Override
     public Piece getPieceAtPosition(Position position) {
+        checkIfPositionIsInBoard(position);
         return board[position.row()][position.col()];
     }
 
@@ -897,6 +836,24 @@ public class GameLogic implements PlayableLogic {
      */
     private void printDivider() {
         System.out.println("***************************************************************************");
+    }
+
+    /**
+     * check if the given position is in the board. <br>
+     * if it is not, throw an exception.
+     *
+     * @param position the position to check
+     * @throws PositionOutOfBoardException if the position is not in the board
+     */
+    private void checkIfPositionIsInBoard(Position position) {
+        if (position.row() < 0 || position.row() > 10 || position.col() < 0 || position.col() > 10)
+            throw new PositionOutOfBoardException();
+    }
+
+    private static class PositionOutOfBoardException extends IllegalArgumentException {
+        public PositionOutOfBoardException() {
+            super("The position is not in the board");
+        }
     }
 }
 
