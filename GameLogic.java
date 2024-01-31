@@ -22,7 +22,7 @@ public class GameLogic implements PlayableLogic {
     private final ConcretePiece[][] board;
 
     /**
-     * The turns history of the game. <br>
+     * The turn history of the game. <br>
      * It will be used to undo moves.
      */
     private final Stack<Turn> turnsHistory;
@@ -765,7 +765,7 @@ public class GameLogic implements PlayableLogic {
      * print the distances according to the assignment instructions. <br>
      * The instructions are:
      * print each piece that moved at least once, sorted in descending order by the distance that the piece has moved. <br>
-     * if two pieces have the same distance, sort them by there number in ascending order. <br>
+     * if two pieces have the same distance, sort them by their number in ascending order. <br>
      * if the pieces have the same distance and the same number, sort them by the winner (first the winner, then the loser).
      * <br>
      *

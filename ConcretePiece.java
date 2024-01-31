@@ -25,7 +25,7 @@ public abstract class ConcretePiece implements Piece {
     public abstract String getName();
 
     /**
-     * add a move to the moves list.
+     * add a move to the move list.
      * update the distance that the piece has moved.
      *
      * @param position the position to add to the moves list.
